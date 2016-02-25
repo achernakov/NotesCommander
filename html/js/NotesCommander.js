@@ -11,6 +11,14 @@ function NotesCommander (container, menu) {
             '<a class="navbar-brand" href="#">' +
             'Notes Commander' +
             '</a>' +
+
+            '<ul class="nav navbar-nav navbar-right">' +
+            '<li class="dropdown">' +
+            '<a href="#" class="dropdown-toggle" data-toggle="dropdown" ' +
+            'role="button" aria-haspopup="true" aria-expanded="false">Select note <span class="caret"></span></a>' +
+            '<ul class="dropdown-menu"  id="documents_list">' +
+            '</ul>' +
+
             '</div>' +
 
                     '<div class="btn-group pull-right" role="group">' +
@@ -33,7 +41,7 @@ function NotesCommander (container, menu) {
     this.BuildControls = function () {
         this.BuildMenu();
         var html =
-            '<div class="col-md-2">' +
+/*            '<div class="col-md-2">' +
             //'<div class="panel panel-default">' +
             //'<div class="panel-body">' +
                 '<div class="row" id="controls">' +
@@ -45,24 +53,24 @@ function NotesCommander (container, menu) {
                 '</div>' +
             //'</div>' +
             //'</div>' +
-            '</div>' +
+            '</div>' +*/
 
-            '<div class="col-md-5">' +
+            '<div class="col-md-6">' +
             '<div class="panel panel-default">' +
             '<div class="panel-heading">Editor' +
             '</div>' +
             '<div class="panel-body" id="markdown_div">' +
                 '<div class="row">' +
-                    '<input class="form-control" style="width: 100%;" id="doc_name" type="text"></input>' +
-                '</div>' +
+                    '<input style="width: 100%; border: none;" id="doc_name" type="text"></input>' +
+                '</div><hr>' +
                 '<div class="row">' +
-                    '<textarea class="form-control" style="width: 100%; height: 500px;" id="markdown"></textarea>' +
+                    '<textarea style="width: 100%; height: 500px; border: none;" id="markdown"></textarea>' +
                 '</div>' +
             '</div>' +
             '</div>' +
             '</div>' +
 
-            '<div class="col-md-5">' +
+            '<div class="col-md-6">' +
             '<div class="panel panel-default">' +
             '<div class="panel-heading">Preview' +
             '</div>' +
@@ -151,7 +159,7 @@ function NotesCommander (container, menu) {
     this.DisplayDocumentsList = function (docs) {
         html = '';
         for (doc in docs) {
-            html = html + '<li class="list-group-item"><a id="' + docs[doc]['id'] + '">' +
+            html = html + '<li><a id="' + docs[doc]['id'] + '">' +
                 docs[doc]['name'] + '</a></li>';
         }
         $('#documents_list').html(html);
