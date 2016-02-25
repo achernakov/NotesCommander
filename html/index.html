@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NotesCommander</title>
+</head>
+<body>
+
+<script src="/js/jquery.js"></script>
+<script src="/js/markdown.js"></script>
+<script src="/js/NotesCommander.js"></script>
+
+<div id="main_container">
+
+</div>
+
+<script>
+
+    $(document).ready(
+        function () {
+            var notes = new NotesCommander('#main_container');
+            notes.BuildControls();
+        }
+    )
+
+</script>
+
+</body>
+</html>
