@@ -1,5 +1,6 @@
 import json
 import pymongo
+from bson.objectid import ObjectId
 import datetime
 
 class Handler:
@@ -19,33 +20,38 @@ class Handler:
         self.HandlingTable = {
             'saveDocument': self.SaveDocument,
             'loadDocument': self.LoadDocument,
-            'getDocuments': self.GetDocuments
+            'getDocuments': self.GetDocuments,
+            'deleteDocument': self.DeleteDocument
         }
 
         self.PrepareDB()
 
         return
 
-    def GetDocuments (self, req):
-        return {'status': 'error', 'description': 'Not implemented'}
-
+    def DeleteDocument(self, req):
+        self.m_collection.remove(ObjectId(req['id']));
+        return {'status': 'success'}
 
     def SaveDocument(self, req):
         doc = req['doc']
         docName = req['name']
         if 'id' in req:
             docId = req['id']
-            self.m_collection.update({'_id': {'$oid': docId}},
+            self.m_collection.update({'_id': ObjectId(docId)},
                                      {'$set': {'doc': doc, 'name': docName, 'datetime': datetime.datetime.now()}})
         else:
             self.m_collection.insert({'doc': doc, 'name': docName, 'datetime': datetime.datetime.now()})
         return {'status': 'success'}
 
     def LoadDocument(self, req):
-        docId = req['id']
-        res = self.m_collection.find_one({'_id': {'$oid': docId}})
+        docId = req['id']['$oid']
+        print (docId)
+        res = self.m_collection.find_one({'_id': ObjectId(docId)})
         print(res)
-        return {'status': 'success'}
+        res['status'] = 'success'
+        res['_id'] = str(res['_id'])
+        res['datetime'] = str(res['datetime'])
+        return res
 
     def HandleRequest (self, req):
         reqtype = req['reqtype']
@@ -61,6 +67,6 @@ class Handler:
         cur = self.m_collection.find({}, {'name': True})
         resp['docs'] = []
         for item in cur:
-            print ('{0}: {1}', str(item['_id']), item['name'])
+            print ('{0}: {1}'.format(str(item['_id']), item['name']))
             resp['docs'].append({'name': item['name'], 'id': str(item['_id'])})
         return resp
