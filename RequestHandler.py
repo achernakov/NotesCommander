@@ -35,13 +35,18 @@ class Handler:
     def SaveDocument(self, req):
         doc = req['doc']
         docName = req['name']
+        docTime = datetime.datetime.now()
+        id = ''
         if 'id' in req:
             docId = req['id']
+            id = docId
             self.m_collection.update({'_id': ObjectId(docId)},
-                                     {'$set': {'doc': doc, 'name': docName, 'datetime': datetime.datetime.now()}})
+                                     {'$set': {'doc': doc, 'name': docName, 'datetime': docTime}})
         else:
-            self.m_collection.insert({'doc': doc, 'name': docName, 'datetime': datetime.datetime.now()})
-        return {'status': 'success'}
+            self.m_collection.insert({'doc': doc, 'name': docName, 'datetime': docTime})
+            ret = self.m_collection.find_one({'name': docName,'datetime': docTime},{})
+            id = str(ret['_id'])
+        return {'status': 'success', 'id': id}
 
     def LoadDocument(self, req):
         docId = req['id']['$oid']

@@ -125,10 +125,10 @@ function NotesCommander (container, menu) {
 
         self.Request(
             req, function (resp) {
+                self.m_currentId = resp.id;
                 self.GetDocuments({data: self});
             }
         );
-
     };
 
     this.NewDocument = function (ev) {
